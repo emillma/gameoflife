@@ -7,7 +7,7 @@ Created on Sun May 24 18:57:23 2020
 
 
 from matplotlib import pyplot as plt
-from matplotlib import animation
+from matplotlib import animation, cm
 from matplotlib.colors import ListedColormap, Normalize
 import numpy as np
 
@@ -24,7 +24,7 @@ class InteractiveGameOfLife:
         self.image = self.ax.imshow(self.data[self.current_gen],
                                     aspect='equal',
                                     interpolation='none',
-                                    cmap = colormap,
+                                    cmap = cm.gray,
                                     norm=normalizor)
         self.generation_text = self.ax.text(0, 1.01, 'hello',
                                             transform=self.ax.transAxes)
