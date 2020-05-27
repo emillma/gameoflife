@@ -11,7 +11,6 @@ from matplotlib import animation, cm
 from matplotlib.colors import ListedColormap, Normalize
 import numpy as np
 
-colormap = ListedColormap(np.array([[0,0,0],[1,1,1]]))
 normalizor = Normalize(0, 1, True)
 
 
@@ -26,7 +25,7 @@ class InteractiveGameOfLife:
                                     interpolation='none',
                                     cmap = cm.gray,
                                     norm=normalizor)
-        self.generation_text = self.ax.text(0, 1.01, 'hello',
+        self.generation_text = self.ax.text(0, 1.01, f'0/{self.data.shape[0]}',
                                             transform=self.ax.transAxes)
         self.fig.canvas.mpl_connect('button_press_event',
                                     self.button_press_event)
@@ -56,6 +55,8 @@ class InteractiveGameOfLife:
             self.current_gen = (self.current_gen + 1) % self.shape[0]
         elif event.key == 'b':
             self.current_gen = (self.current_gen - 1) % self.shape[0]
+        self.generation_text.set_text(
+            f'{self.current_gen}/{self.data.shape[0]}')
         self.image.set_data(self.data[self.current_gen])
         self.redraw()
     def motion_notify_event(self, event):
