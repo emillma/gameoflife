@@ -9,6 +9,7 @@ Created on Sun May 24 18:57:23 2020
 from matplotlib import pyplot as plt
 from matplotlib import animation, cm
 from matplotlib.colors import ListedColormap, Normalize
+from matplotlib.animation import FuncAnimation
 import numpy as np
 
 normalizor = Normalize(0, 1, True)
@@ -63,10 +64,23 @@ class InteractiveGameOfLife:
         pass
 
 
+def to_GIF(data):
+    fig, ax  = plt.subplots(1,1)
+    n = data.shape[0]
+    generation_text = ax.text(0, 1.01, f'0/{n}',
+                                            transform=ax.transAxes)
+    normalizor = Normalize(0, 1, True)
+    image = ax.imshow(data[0] * 0,
+                      aspect='equal',
+                      interpolation='none',
+                      cmap = cm.gray,
+                      norm=normalizor)
+    def update(i):
+        generation_text.set_text(
+            f'{i}/{n}')
+        image.set_data(data[i])
+        return generation_text, image
+    anim = FuncAnimation(fig, update, frames=range(n), interval=50)
+    anim.save('line.mp4', dpi=240)
+    return anim
 
-
-
-if __name__ == '__main__':
-    data = np.random.randint(0,2,(100, 256,256))
-    # anim = animate_game_of_life(data)
-    gol = InteractiveGameOfLife(data)
